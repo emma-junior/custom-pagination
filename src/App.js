@@ -12,16 +12,16 @@ function App() {
 
     setTodos(allTodos);
   };
-  useEffect(() => {
-    getTodos();
-  }, []);
-  console.log(todos);
 
   const currentTableData = useMemo(() => {
     const firstPageIndex = (currentPage - 1) * PageSize;
     const lastPageIndex = firstPageIndex + PageSize;
-    return todos.slice(firstPageIndex, lastPageIndex);
-  }, [currentPage]);
+    return todos?.slice(firstPageIndex, lastPageIndex);
+  }, [currentPage, todos]);
+
+  useEffect(() => {
+    getTodos();
+  }, []);
   return (
     <>
       <table>
@@ -32,11 +32,11 @@ function App() {
           </tr>
         </thead>
         <tbody>
-          {currentTableData.map((todo) => {
+          {(currentTableData ?? []).map((todo, index) => {
             return (
-              <tr>
-                <td>{todo.id}</td>
-                <td>{todo.title}</td>
+              <tr key={index}>
+                <td>{todo?.id}</td>
+                <td>{todo?.title}</td>
               </tr>
             );
           })}
